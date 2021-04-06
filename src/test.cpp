@@ -59,6 +59,13 @@ namespace Test {
         TEST_COMPLETE;
     }
 
+    bool Vector_scaling() {
+        Vec<double, 3> a{7.5, 8.0, 20.0};
+        Vec<double, 3> b{18.75, 20.0, 50.0};
+        TEST_ASSERT(a * 2.5 == b);
+        TEST_COMPLETE;
+    }
+
     bool Vector_split() {
         Vec<int, 5> v{5, 8, 2, 3, 6};
         auto[a, b] = v.split<2>();
@@ -99,6 +106,7 @@ int main() {
     TEST(Vector_constructor_test)
     TEST(Vector_sum)
     TEST(Vector_difference)
+    TEST(Vector_scaling)
     TEST(Vector_split)
     TEST(Vector_concat)
     TEST(Vector_length)
