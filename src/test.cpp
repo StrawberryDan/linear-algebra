@@ -99,6 +99,15 @@ namespace Test {
         TEST_ASSERT(a.length() == 1.0);
         TEST_COMPLETE;
     }
+
+    bool Vector_cross_product() {
+        Vec<double, 3> a{1, 0, 0};
+        Vec<double, 3> b{0, 1, 0};
+        Vec<double, 3> c = a.cross_product(b);
+        Vec<double, 3> d{0, 0, 1};
+        TEST_ASSERT(c == d);
+        TEST_COMPLETE;
+    }
 }
 
 int main() {
@@ -112,4 +121,5 @@ int main() {
     TEST(Vector_length)
     TEST(Vector_angle_between)
     TEST(Vector_normalisation)
+    TEST(Vector_cross_product)
 }

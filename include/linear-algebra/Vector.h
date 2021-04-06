@@ -175,4 +175,15 @@ public:
 
         return std::make_tuple(a, b);
     }
+
+    // Returns the cross product of two vectors of length 3
+    Vec cross_product(const Vec &b) {
+        static_assert(S == 3, "Cross Product is not defined on vectors not of size 3");
+
+        Vec<T, 3> cross;
+        cross[0] = (*this)[1] * b[2] - (*this)[2] * b[1];
+        cross[1] = (*this)[2] * b[0] - (*this)[0] * b[2];
+        cross[2] = (*this)[0] * b[1] - (*this)[1] * b[0];
+        return cross;
+    }
 };
