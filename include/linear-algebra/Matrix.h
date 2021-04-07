@@ -16,7 +16,7 @@ public:
     }
 
     // Initialises the matrix with the given values in row column order. Unspecified values are the identity.
-    Matrix(std::initializer_list<T> args): Matrix() {
+    explicit Matrix(std::initializer_list<T> args) : Matrix() {
         int cursor = 0;
         for (auto i = args.begin(); i != args.end() && cursor < W * H; i++) {
             int row = cursor / W;
@@ -27,7 +27,7 @@ public:
     }
 
     // Initialises the matrix with explicit rows and columns. Unspecified values are the identity.
-    Matrix(std::initializer_list<std::initializer_list<T>> args): Matrix() {
+    explicit Matrix(std::initializer_list<std::initializer_list<T>> args) : Matrix() {
         int rowCursor = 0, colCursor = 0;
 
         for (auto rowIter = args.begin(); rowIter != args.end() && rowCursor < H; rowIter++) {
@@ -38,6 +38,11 @@ public:
             }
             rowCursor++;
         }
+    }
+
+    template<typename L>
+    explicit Matrix(L lambda) {
+        for (int i = 0; i < H; i++) for (int j = 0; j < W; j++) data[i][j] = lambda(i, j);
     }
 
     // Mutable accessor

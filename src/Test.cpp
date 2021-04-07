@@ -123,6 +123,15 @@ namespace Test {
         TEST_ASSERT(m[0][2] == 0.0);
         TEST_ASSERT(m[1][2] == 0.0);
         TEST_ASSERT(m[2][2] == 1.0);
+        Matrix<int, 3, 3> m2([](unsigned int i, unsigned int j) { return i + j; });
+        TEST_ASSERT(m2[2][2] == 4);
+        TEST_ASSERT(m2[1][0] == 1);
+        TEST_ASSERT(m2[0][1] == 1);
+        TEST_ASSERT(m2[2][1] == 3);
+        float value = 5.0;
+        Matrix<float, 3, 3> m3([&value](unsigned int i, unsigned int j) { return i + j + value; });
+        TEST_ASSERT(m3[0][0] == 5.0);
+        TEST_ASSERT(m3[2][2] == 9.0);
         TEST_COMPLETE;
     }
 
