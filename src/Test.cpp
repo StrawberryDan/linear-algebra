@@ -1,7 +1,10 @@
 #include <linear-algebra/Vector.h>
 #include <linear-algebra/Matrix.h>
+#include <linear-algebra/Transformation.h>
 
 #include <iostream>
+
+using namespace LinearAlgebra;
 
 #define TEST(function) \
     if (function()) {  \
@@ -17,7 +20,7 @@
 
 namespace Test {
     bool Vector_constructor_test() {
-        Vec<int, 6> v{0, 4, 5, 6};
+        Vector<int, 6> v{0, 4, 5, 6};
         TEST_ASSERT(v[0] == 0);
         TEST_ASSERT(v[1] == 4);
         TEST_ASSERT(v[2] == 5);
@@ -28,19 +31,19 @@ namespace Test {
     }
 
     bool Vector_sum() {
-        Vec<double, 3> a{3.5, 0.0, 11.7};
-        Vec<double, 3> b{5.5, 8.0, 8.3};
-        Vec<double, 3> c = a + b;
-        Vec<double, 3> d{9.0, 8.0, 20.0};
+        Vector<double, 3> a{3.5, 0.0, 11.7};
+        Vector<double, 3> b{5.5, 8.0, 8.3};
+        Vector<double, 3> c = a + b;
+        Vector<double, 3> d{9.0, 8.0, 20.0};
         TEST_ASSERT(c == d);
         TEST_COMPLETE;
     }
 
     bool Vector_concat() {
-        Vec<int, 3> v1{1, 2, 3};
-        Vec<int, 4> v2 = v1.append(4);
-        Vec<int, 2> v3{4, 5};
-        Vec<int, 5> v4 = v1.concat(v3);
+        Vector<int, 3> v1{1, 2, 3};
+        Vector<int, 4> v2 = v1.append(4);
+        Vector<int, 2> v3{4, 5};
+        Vector<int, 5> v4 = v1.concat(v3);
         TEST_ASSERT(v2[0] == 1);
         TEST_ASSERT(v2[1] == 2);
         TEST_ASSERT(v2[2] == 3);
@@ -54,23 +57,23 @@ namespace Test {
     }
 
     bool Vector_difference() {
-        Vec<double, 3> a{3.5, 0.0, 11.0};
-        Vec<double, 3> b{5.5, 8.0, 8.0};
-        Vec<double, 3> c = a - b;
-        Vec<double, 3> d{-2.0, -8.0, 3.0};
+        Vector<double, 3> a{3.5, 0.0, 11.0};
+        Vector<double, 3> b{5.5, 8.0, 8.0};
+        Vector<double, 3> c = a - b;
+        Vector<double, 3> d{-2.0, -8.0, 3.0};
         TEST_ASSERT(c == d);
         TEST_COMPLETE;
     }
 
     bool Vector_scaling() {
-        Vec<double, 3> a{7.5, 8.0, 20.0};
-        Vec<double, 3> b{18.75, 20.0, 50.0};
+        Vector<double, 3> a{7.5, 8.0, 20.0};
+        Vector<double, 3> b{18.75, 20.0, 50.0};
         TEST_ASSERT(a * 2.5 == b);
         TEST_COMPLETE;
     }
 
     bool Vector_split() {
-        Vec<int, 5> v{5, 8, 2, 3, 6};
+        Vector<int, 5> v{5, 8, 2, 3, 6};
         auto[a, b] = v.split<2>();
         TEST_ASSERT(a[0] == 5);
         TEST_ASSERT(a[1] == 8);
@@ -81,21 +84,21 @@ namespace Test {
     }
 
     bool Vector_length() {
-        Vec<int, 3> v{3, 4};
+        Vector<int, 3> v{3, 4};
         TEST_ASSERT(v.length() == 5.0);
         TEST_COMPLETE;
     }
 
     bool Vector_angle_between() {
-        Vec<int, 2> a{1, 0};
-        Vec<int, 2> b{0, 1};
+        Vector<int, 2> a{1, 0};
+        Vector<int, 2> b{0, 1};
         double angle = a.angle_between(b);
         TEST_ASSERT(angle == M_PI_2);
         TEST_COMPLETE;
     }
 
     bool Vector_normalisation() {
-        Vec<double, 3> a{6, 2, 5};
+        Vector<double, 3> a{6, 2, 5};
         double normal_length = a.normalised().length();
         TEST_ASSERT(normal_length == 1.0);
         a.normalise();
@@ -104,10 +107,10 @@ namespace Test {
     }
 
     bool Vector_cross_product() {
-        Vec<double, 3> a{1, 0, 0};
-        Vec<double, 3> b{0, 1, 0};
-        Vec<double, 3> c = a.cross_product(b);
-        Vec<double, 3> d{0, 0, 1};
+        Vector<double, 3> a{1, 0, 0};
+        Vector<double, 3> b{0, 1, 0};
+        Vector<double, 3> c = a.cross_product(b);
+        Vector<double, 3> d{0, 0, 1};
         TEST_ASSERT(c == d);
         TEST_COMPLETE;
     }
@@ -144,10 +147,10 @@ namespace Test {
     }
 
     bool Matrix_determinant() {
-        Matrix<double, 1, 1> a = {1.0};
+        Matrix<double, 1, 1> a{1.0};
         TEST_ASSERT(a.determinant() == 1.0);
-        Matrix<double, 2, 2> b = {1.0, 2.0,
-                                  3.0, 4.0};
+        Matrix<double, 2, 2> b{1.0, 2.0,
+                               3.0, 4.0};
         TEST_ASSERT(b.determinant() == -2.0);
         Matrix<double, 3, 3> c({5, 9, 7,
                                 4, 1, 6,
@@ -168,6 +171,14 @@ namespace Test {
         Matrix<double, 3, 3> d;
         TEST_ASSERT(a * b == d);
         TEST_COMPLETE;
+    }
+
+    bool Transformation_rotation() {
+        using namespace Orientation;
+        using namespace Transformation;
+
+        Vector<double, 3> v{1, 0, 0};
+        // TODO
     }
 }
 
