@@ -2,9 +2,10 @@
 
 #include <vector>
 #include <array>
+#include "Matrix.h"
 
 // Vec of type T and size S
-template<typename T, unsigned int S>
+template<typename T, unsigned int S> requires std::is_integral<T>::value || std::is_floating_point<T>::value
 class Vec {
 private:
     // Array containing the data values
@@ -22,15 +23,21 @@ public:
     Vec(std::array<T, S> &&data) : data(data) {}
 
     // Initialises a vector from the given values. Fills up to the length of the list or the vector and the rest will be 0.
-    Vec(std::initializer_list<T> args) {
+    Vec(std::initializer_list<T> args): Vec() {
         int cursor = 0;
         for (auto i = args.begin(); i != args.end() && cursor < S; i++) {
             data[cursor++] = *i;
         }
+    }
 
-        while (cursor < S) {
-            data[cursor++] = 0;
-        }
+    Vec(const Matrix<T, S, 1> &m) {
+        for (int i = 0; i < S; i++) data[i] = m[i][0];
+    }
+
+    Matrix<T, S, 1> to_matrix() const {
+        Matrix<T, S, 1> matrix;
+        for (int i = 0; i < S; i++) matrix[i][0] = data[i];
+        return matrix;
     }
 
     // Mutable accessor
@@ -177,8 +184,8 @@ public:
     }
 
     // Returns the cross product of two vectors of length 3
-    Vec cross_product(const Vec &b) {
-        static_assert(S == 3, "Cross Product is not defined on vectors not of size 3");
+    Vec<T, S> cross_product(const Vec &b) {
+        static_assert(S == 3, "Cross Product is not defined on vectors of size other than 3");
 
         Vec<T, 3> cross;
         cross[0] = (*this)[1] * b[2] - (*this)[2] * b[1];
@@ -187,3 +194,8 @@ public:
         return cross;
     }
 };
+
+template<typename T, unsigned int S>
+Vec<T, S> operator*(const T m, const Vec<T, S> &v) {
+    return v * m;
+}

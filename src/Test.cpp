@@ -1,13 +1,16 @@
 #include <linear-algebra/Vector.h>
+#include <linear-algebra/Matrix.h>
 
 #include <iostream>
 
 #define TEST(function) \
-    if (function()) { \
+    if (function()) {  \
+        success++;               \
         std::cout << "TEST: [" << #function << "] SUCCESS" << std::endl; \
     } else { \
         std::cout << "TEST: [" << #function << "] FAILED" << std::endl;\
-    }
+    } \
+    total++;
 
 #define TEST_ASSERT(x) if (!(x)) return false
 #define TEST_COMPLETE return true
@@ -108,10 +111,60 @@ namespace Test {
         TEST_ASSERT(c == d);
         TEST_COMPLETE;
     }
+
+    bool Matrix_constructor() {
+        Matrix<double, 3, 3> m;
+        TEST_ASSERT(m[0][0] == 1.0);
+        TEST_ASSERT(m[1][0] == 0.0);
+        TEST_ASSERT(m[2][0] == 0.0);
+        TEST_ASSERT(m[0][1] == 0.0);
+        TEST_ASSERT(m[1][1] == 1.0);
+        TEST_ASSERT(m[2][1] == 0.0);
+        TEST_ASSERT(m[0][2] == 0.0);
+        TEST_ASSERT(m[1][2] == 0.0);
+        TEST_ASSERT(m[2][2] == 1.0);
+        TEST_COMPLETE;
+    }
+
+    bool Matrix_multiplication() {
+        Matrix<double, 3, 3> a{8, 5, 3, 1, 6, 9, 2, 4, 7};
+        Matrix<double, 3, 3> b{5, 9, 2, 6, 7, 4, 1, 3, 8};
+        Matrix<double, 3, 3> c{73, 116, 60, 50, 78, 98, 41, 67, 76};
+        TEST_ASSERT(a * b == c);
+        TEST_COMPLETE;
+    }
+
+    bool Matrix_determinant() {
+        Matrix<double, 1, 1> a = {1.0};
+        TEST_ASSERT(a.determinant() == 1.0);
+        Matrix<double, 2, 2> b = {1.0, 2.0,
+                                  3.0, 4.0};
+        TEST_ASSERT(b.determinant() == -2.0);
+        Matrix<double, 3, 3> c({5, 9, 7,
+                                4, 1, 6,
+                                3, 8, 2});
+        TEST_ASSERT(c.determinant() == 63.0);
+        TEST_COMPLETE;
+    }
+
+    bool Matrix_inverse() {
+        Matrix<double, 3, 3> a{2, 2, 0,
+                               0, 4, 0,
+                               16, 0, 8};
+        Matrix<double, 3, 3> b = a.inverse();
+        Matrix<double, 3, 3> c{1.0 / 2.0, -1.0 / 4.0, 0,
+                               0, 1.0 / 4.0, 0,
+                               -1.0, 1.0 / 2.0, 1.0 / 8.0};
+        TEST_ASSERT(b == c);
+        Matrix<double, 3, 3> d;
+        TEST_ASSERT(a * b == d);
+        TEST_COMPLETE;
+    }
 }
 
 int main() {
     using namespace Test;
+    unsigned int success = 0, total = 0;
     TEST(Vector_constructor_test)
     TEST(Vector_sum)
     TEST(Vector_difference)
@@ -122,4 +175,9 @@ int main() {
     TEST(Vector_angle_between)
     TEST(Vector_normalisation)
     TEST(Vector_cross_product)
+    TEST(Matrix_constructor)
+    TEST(Matrix_multiplication)
+    TEST(Matrix_determinant)
+    TEST(Matrix_inverse)
+    std::cout << success << "/" << total << " passed!" << std::endl;
 }

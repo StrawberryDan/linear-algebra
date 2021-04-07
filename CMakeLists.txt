@@ -3,5 +3,5 @@ project(linear_algebra)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(linear-algebra-test src/test.cpp)
+add_executable(linear-algebra-test src/Test.cpp include/linear-algebra/Matrix.h)
 target_include_directories(linear-algebra-test PRIVATE include)
