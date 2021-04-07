@@ -281,7 +281,8 @@ namespace LinearAlgebra {
             return adjugate.transpose();
         }
 
-        // Calculates the inverse of a matrix
+        // Calculates the inverse of a matrix.
+        // Throws std::invalid_argument when used on a singular matrix.
         Matrix<T, H, W> inverse() const {
             double det = this->determinant();
             if (det == 0.0)
