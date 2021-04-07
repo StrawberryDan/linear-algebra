@@ -135,14 +135,14 @@ namespace LinearAlgebra {
         }
 
         // Scales a matrix by a given constant
-        Matrix scale(double m) const {
+        Matrix scale(T m) const {
             Matrix scaled;
             for (int i = 0; i < H; i++) for (int j = 0; j < W; j++) scaled[i][j] = m * (*this)[i][j];
             return scaled;
         }
 
         // Operator overload for constant multiplication
-        Matrix operator*(const double &b) const {
+        Matrix operator*(const T &b) const {
             return (*this).scale(b);
         }
 
@@ -286,8 +286,8 @@ namespace LinearAlgebra {
     };
 
 // Overloads operator to make scalar multiplication commutative
-    template<unsigned int H, unsigned int W>
-    Matrix<double, H, W> operator*(const double scalar, const Matrix<double, H, W> &matrix) {
+    template<typename T, unsigned int H, unsigned int W>
+    Matrix<T, H, W> operator*(const T scalar, const Matrix<T, H, W> &matrix) {
         return matrix * scalar;
     }
 }
