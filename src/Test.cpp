@@ -182,7 +182,12 @@ namespace Test {
         Matrix<double, 3, 3> matrix = rotation<double, 3>(orientation);
         Vector<double, 3> b = matrix * a;
         Vector<double, 3> c{-1, 0, 0};
-        TEST_ASSERT(b == c);
+        TEST_ASSERT((c - b).length() < 0.0000001);
+        orientation = EulerAngle(0, M_PI_2, 0);
+        matrix = rotation<double, 3>(orientation);
+        b = matrix * a;
+        c = Vector<double, 3>{0, 1, 0};
+        TEST_ASSERT((c - b).length() < 0.0000001);
         TEST_COMPLETE;
     }
 }
