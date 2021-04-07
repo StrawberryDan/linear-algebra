@@ -177,8 +177,13 @@ namespace Test {
         using namespace Orientation;
         using namespace Transformation;
 
-        Vector<double, 3> v{1, 0, 0};
-        // TODO
+        auto orientation = EulerAngle(0, 0, M_PI);
+        Vector<double, 3> a{1, 0, 0};
+        Matrix<double, 3, 3> matrix = rotation<double, 3>(orientation);
+        Vector<double, 3> b = matrix * a;
+        Vector<double, 3> c{-1, 0, 0};
+        TEST_ASSERT(b == c);
+        TEST_COMPLETE;
     }
 }
 
@@ -199,5 +204,6 @@ int main() {
     TEST(Matrix_multiplication)
     TEST(Matrix_determinant)
     TEST(Matrix_inverse)
+    TEST(Transformation_rotation)
     std::cout << success << "/" << total << " passed!" << std::endl;
 }

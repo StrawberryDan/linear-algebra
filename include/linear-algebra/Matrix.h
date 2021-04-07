@@ -69,6 +69,21 @@ namespace LinearAlgebra {
             return data[i];
         }
 
+        // Returns the a column as a vector
+        Vector <T, H> column_as_vector(unsigned int i) const {
+            Vector<T, H> column;
+            for (int j = 0; j < H; j++)
+                column[j] = data[j][i];
+            return column;
+        }
+
+        // Returns the colums of the matrix as vectors
+        std::array<Vector< T, H>, W> to_vectors() const {
+            std::array<Vector<T, H>, W> vectors;
+            for (int i = 0; i < W; i++) vectors[i] = column_as_vector(i);
+            return vectors;
+        }
+
         // Tests is 2 matrices are equal
         bool equals(const Matrix &b) const {
             for (int i = 0; i < H; i++) for (int j = 0; j < W; j++) if ((*this)[i][j] != b[i][j]) return false;
@@ -120,14 +135,14 @@ namespace LinearAlgebra {
         }
 
         // Scales a matrix by a given constant
-        Matrix scale(T m) const {
+        Matrix scale(double m) const {
             Matrix scaled;
             for (int i = 0; i < H; i++) for (int j = 0; j < W; j++) scaled[i][j] = m * (*this)[i][j];
             return scaled;
         }
 
         // Operator overload for constant multiplication
-        Matrix operator*(const T &b) const {
+        Matrix operator*(const double &b) const {
             return (*this).scale(b);
         }
 
@@ -138,7 +153,7 @@ namespace LinearAlgebra {
 
         // Multiplies 2 matrices together
         template<unsigned int D>
-        Matrix<T, H, D> multiply(const Matrix<T, W, D> &b) const {
+        Matrix<T, H, D> multiply_matrix(const Matrix<T, W, D> &b) const {
             Matrix<T, H, D> multiply;
             for (int i = 0; i < H; i++) {
                 for (int j = 0; j < W; j++) {
@@ -153,7 +168,19 @@ namespace LinearAlgebra {
         // Operator overload for matrix multiplication
         template<unsigned int D>
         Matrix<T, D, D> operator*(const Matrix<T, H, D> &b) const {
-            return (*this).multiply(b);
+            return (*this).multiply_matrix(b);
+        }
+
+        Vector <T, H> multiply_vector(const Vector <T, W> &v) const {
+            Vector<T, H> multiply;
+            for (int i = 0; i < H; i++)
+                multiply += v[i] * column_as_vector(i);
+            return multiply;
+        }
+
+        // Operator overload for matrix multiplication
+        Vector <T, H> operator*(const Vector <T, W> &b) const {
+            return (*this).multiply_vector(b);
         }
 
         // Returns the submatrix with H2 rows and W2 columns starting at row, column
@@ -259,8 +286,8 @@ namespace LinearAlgebra {
     };
 
 // Overloads operator to make scalar multiplication commutative
-    template<typename T, unsigned int H, unsigned int W>
-    Matrix<T, H, W> operator*(const T scalar, const Matrix<T, H, W> &matrix) {
+    template<unsigned int H, unsigned int W>
+    Matrix<double, H, W> operator*(const double scalar, const Matrix<double, H, W> &matrix) {
         return matrix * scalar;
     }
 }

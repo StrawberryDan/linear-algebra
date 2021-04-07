@@ -30,16 +30,6 @@ namespace LinearAlgebra {
             }
         }
 
-        Vector(const Matrix<T, S, 1> &m) {
-            for (int i = 0; i < S; i++) data[i] = m[i][0];
-        }
-
-        Matrix<T, S, 1> to_matrix() const {
-            Matrix<T, S, 1> matrix;
-            for (int i = 0; i < S; i++) matrix[i][0] = data[i];
-            return matrix;
-        }
-
         // Mutable accessor
         T &operator[](unsigned int i) {
             return data[i];
