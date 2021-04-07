@@ -11,7 +11,7 @@ using namespace LinearAlgebra;
         success++;               \
         std::cout << "TEST: [" << #function << "] SUCCESS" << std::endl; \
     } else { \
-        std::cout << "TEST: [" << #function << "] FAILED" << std::endl;\
+        std::cerr << "TEST: [" << #function << "] FAILED" << std::endl;\
     } \
     total++;
 
