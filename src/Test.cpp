@@ -173,6 +173,26 @@ namespace Test {
         TEST_COMPLETE;
     }
 
+    bool Transformation_translation() {
+        using namespace Transformation;
+
+        Vector<double, 4> a{1, 2, 3, 1};
+        Matrix<double, 4, 4> m = translate<double, 4>(Vector<double, 3>{3, -2, 6});
+        Vector<double, 4> b{4, 0, 9, 1};
+        TEST_ASSERT(m * a == b);
+        TEST_COMPLETE;
+    }
+
+    bool Transformation_scale() {
+        using namespace Transformation;
+
+        Vector<double, 2> a{2, 5};
+        Matrix<double, 2, 2> m = scale<double, 2>(Vector<double, 2>{2, 3});
+        Vector<double, 2> b{4, 15};
+        TEST_ASSERT(m * a == b);
+        TEST_COMPLETE;
+    }
+
     bool Transformation_rotation() {
         using namespace Orientation;
         using namespace Transformation;
@@ -209,6 +229,8 @@ int main() {
     TEST(Matrix_multiplication)
     TEST(Matrix_determinant)
     TEST(Matrix_inverse)
+    TEST(Transformation_translation)
+    TEST(Transformation_scale)
     TEST(Transformation_rotation)
     std::cout << success << "/" << total << " passed!" << std::endl;
 }
