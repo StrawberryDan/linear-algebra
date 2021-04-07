@@ -78,7 +78,9 @@ namespace LinearAlgebra {
         }
 
         // Returns the colums of the matrix as vectors
-        std::array<Vector< T, H>, W> to_vectors() const {
+        std::array<Vector < T, H>, W>
+
+        to_vectors() const {
             std::array<Vector<T, H>, W> vectors;
             for (int i = 0; i < W; i++) vectors[i] = column_as_vector(i);
             return vectors;
@@ -281,7 +283,11 @@ namespace LinearAlgebra {
 
         // Calculates the inverse of a matrix
         Matrix<T, H, W> inverse() const {
-            return (1.0 / this->determinant()) * this->adjugate();
+            double det = this->determinant();
+            if (det == 0.0)
+                throw std::invalid_argument("Cannot compute inverse of singular matrix");
+            else
+                return (1.0 / det) * this->adjugate();
         }
     };
 
