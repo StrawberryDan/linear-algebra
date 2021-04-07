@@ -9,12 +9,12 @@ namespace LinearAlgebra {
                                                                   std::is_floating_point<T>::value
     class Matrix {
     protected:
-        std::array<std::array<T, W>, H> data;
+        std::array<std::array<T, W>, H> values;
 
     public:
         // Default constructor. Creates an identity matrix
         Matrix() {
-            for (int i = 0; i < H; i++) for (int j = 0; j < W; j++) data[i][j] = (i == j) ? 1 : 0;
+            for (int i = 0; i < H; i++) for (int j = 0; j < W; j++) values[i][j] = (i == j) ? 1 : 0;
         }
 
         // Initialises the matrix with the given values in row column order. Unspecified values are the identity.
@@ -23,7 +23,7 @@ namespace LinearAlgebra {
             for (auto i = args.begin(); i != args.end() && cursor < W * H; i++) {
                 int row = cursor / W;
                 int col = cursor % W;
-                data[row][col] = *i;
+                values[row][col] = *i;
                 cursor++;
             }
         }
@@ -36,7 +36,7 @@ namespace LinearAlgebra {
                 auto row = *rowIter;
                 colCursor = 0;
                 for (auto colIter = row->begin(); colIter != row->end() && colCursor < W; colIter++) {
-                    data[rowCursor][colCursor++] = *colIter;
+                    values[rowCursor][colCursor++] = *colIter;
                 }
                 rowCursor++;
             }
@@ -45,7 +45,7 @@ namespace LinearAlgebra {
         // Constructor for a matrix of which it values are specified by a lambda over their indices.
         template<typename L>
         explicit Matrix(L lambda) {
-            for (int i = 0; i < H; i++) for (int j = 0; j < W; j++) data[i][j] = lambda(i, j);
+            for (int i = 0; i < H; i++) for (int j = 0; j < W; j++) values[i][j] = lambda(i, j);
         }
 
         template<unsigned int H2, unsigned int W2>
@@ -61,19 +61,19 @@ namespace LinearAlgebra {
 
         // Mutable accessor
         std::array<T, W> &operator[](unsigned int i) {
-            return data[i];
+            return values[i];
         }
 
         // Immutable accessor
         const std::array<T, W> &operator[](unsigned int i) const {
-            return data[i];
+            return values[i];
         }
 
         // Returns the a column as a vector
         Vector <T, H> column_as_vector(unsigned int i) const {
             Vector<T, H> column;
             for (int j = 0; j < H; j++)
-                column[j] = data[j][i];
+                column[j] = values[j][i];
             return column;
         }
 
@@ -160,7 +160,7 @@ namespace LinearAlgebra {
             for (int i = 0; i < H; i++) {
                 for (int j = 0; j < W; j++) {
                     T accumulator = 0;
-                    for (int k = 0; k < W; k++) accumulator += data[i][k] * b[k][j];
+                    for (int k = 0; k < W; k++) accumulator += values[i][k] * b[k][j];
                     multiply[i][j] = accumulator;
                 }
             }
@@ -251,12 +251,12 @@ namespace LinearAlgebra {
             static_assert(H == W, "Cannot compute the determinant of a non-square matrix.");
 
             if constexpr (H == 1 && W == 1) {
-                return data[0][0];
+                return values[0][0];
             } else {
                 T accumulator = 0;
                 for (int i = 0; i < W; i++) {
                     double sign = (i % 2 == 0) ? 1 : -1;
-                    accumulator += sign * data[0][i] * this->minor(0, i).determinant();
+                    accumulator += sign * values[0][i] * this->minor(0, i).determinant();
                 }
                 return accumulator;
             }
@@ -265,7 +265,7 @@ namespace LinearAlgebra {
         // Transposes the matrix
         Matrix<T, W, H> transpose() const {
             Matrix<T, W, H> transpose;
-            for (int i = 0; i < H; i++) for (int j = 0; j < W; j++) transpose[i][j] = data[j][i];
+            for (int i = 0; i < H; i++) for (int j = 0; j < W; j++) transpose[i][j] = values[j][i];
             return transpose;
         }
 
@@ -289,6 +289,16 @@ namespace LinearAlgebra {
                 throw std::invalid_argument("Cannot compute inverse of singular matrix");
             else
                 return (1.0 / det) * this->adjugate();
+        }
+
+        // Returns raw pointer to internal data
+        T* data() {
+            return (T*) values.data();
+        }
+
+        // Returns const raw poinnter to internal data
+        const T* data() const {
+            return (T*) values.data();
         }
     };
 

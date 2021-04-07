@@ -138,6 +138,15 @@ namespace Test {
         TEST_COMPLETE;
     }
 
+    bool Vector_data() {
+        Vector<int, 9> a{1, 2, 3, 4, 5, 6, 7, 8, 9};
+        TEST_ASSERT(a.data()[0] == 1);
+        TEST_ASSERT(a.data()[3] == 4);
+        TEST_ASSERT(a.data()[6] == 7);
+        TEST_ASSERT(a.data()[8] == 9);
+        TEST_COMPLETE;
+    }
+
     bool Matrix_multiplication() {
         Matrix<double, 3, 3> a{8, 5, 3, 1, 6, 9, 2, 4, 7};
         Matrix<double, 3, 3> b{5, 9, 2, 6, 7, 4, 1, 3, 8};
@@ -170,6 +179,15 @@ namespace Test {
         TEST_ASSERT(b == c);
         Matrix<double, 3, 3> d;
         TEST_ASSERT(a * b == d);
+        TEST_COMPLETE;
+    }
+
+    bool Matrix_data() {
+        Matrix<int, 3, 3> a{1, 2, 3, 4, 5, 6, 7, 8, 9};
+        TEST_ASSERT(a.data()[0] == 1);
+        TEST_ASSERT(a.data()[3] == 4);
+        TEST_ASSERT(a.data()[6] == 7);
+        TEST_ASSERT(a.data()[8] == 9);
         TEST_COMPLETE;
     }
 
@@ -225,10 +243,12 @@ int main() {
     TEST(Vector_angle_between)
     TEST(Vector_normalisation)
     TEST(Vector_cross_product)
+    TEST(Vector_data)
     TEST(Matrix_constructor)
     TEST(Matrix_multiplication)
     TEST(Matrix_determinant)
     TEST(Matrix_inverse)
+    TEST(Matrix_data)
     TEST(Transformation_translation)
     TEST(Transformation_scale)
     TEST(Transformation_rotation)

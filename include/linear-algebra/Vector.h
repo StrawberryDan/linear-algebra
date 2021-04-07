@@ -8,36 +8,36 @@ namespace LinearAlgebra {
     template<typename T, unsigned int S> requires std::is_integral<T>::value || std::is_floating_point<T>::value
     class Vector {
     private:
-        // Array containing the data values
-        std::array<T, S> data;
+        // Array containing the values values
+        std::array<T, S> values;
     public:
-        // Default constructor. Initialises all data to 0;
+        // Default constructor. Initialises all values to 0;
         Vector() {
-            for (int i = 0; i < S; i++) data[i] = 0;
+            for (int i = 0; i < S; i++) values[i] = 0;
         };
 
         // Copy Constructor from array
-        Vector(std::array<T, S> &data) : data(data) {}
+        Vector(std::array<T, S> &data) : values(data) {}
 
         // Move Constructor of an array
-        Vector(std::array<T, S> &&data) : data(data) {}
+        Vector(std::array<T, S> &&data) : values(data) {}
 
         // Initialises a vector from the given values. Fills up to the length of the list or the vector and the rest will be 0.
         Vector(std::initializer_list<T> args) : Vector() {
             int cursor = 0;
             for (auto i = args.begin(); i != args.end() && cursor < S; i++) {
-                data[cursor++] = *i;
+                values[cursor++] = *i;
             }
         }
 
         // Mutable accessor
         T &operator[](unsigned int i) {
-            return data[i];
+            return values[i];
         }
 
         // Immutable accessor
         const T &operator[](unsigned int i) const {
-            return data[i];
+            return values[i];
         }
 
         // Tests is 2 vectors are equal
@@ -127,7 +127,7 @@ namespace LinearAlgebra {
         // Returns the magnitude of the vector
         double length() const {
             double accumulator = 0;
-            for (int i = 0; i < S; i++) accumulator += (double) data[i] * (double) data[i];
+            for (int i = 0; i < S; i++) accumulator += (double) values[i] * (double) values[i];
             return sqrt(accumulator);
         }
 
@@ -182,6 +182,16 @@ namespace LinearAlgebra {
             cross[1] = (*this)[2] * b[0] - (*this)[0] * b[2];
             cross[2] = (*this)[0] * b[1] - (*this)[1] * b[0];
             return cross;
+        }
+
+        // Returns raw pointer to internal data
+        T* data() {
+            return values.data();
+        }
+
+        // Returns const raw pointer to internal data
+        const T* data() const {
+            return values.data();
         }
     };
 
