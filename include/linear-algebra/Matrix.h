@@ -5,8 +5,8 @@
 #include "Vector.h"
 
 namespace LinearAlgebra {
-    template<typename T, unsigned int H, unsigned int W> requires std::is_integral<T>::value ||
-                                                                  std::is_floating_point<T>::value
+    template<unsigned int H, unsigned int W = H, typename T = double> requires std::is_integral<T>::value ||
+                                                                           std::is_floating_point<T>::value
     class Matrix {
     protected:
         std::array<std::array<T, W>, H> values;
@@ -49,8 +49,8 @@ namespace LinearAlgebra {
         }
 
         template<unsigned int H2, unsigned int W2>
-        explicit Matrix(Matrix<T, H2, W2> other) {
-            Matrix<T, H, W> m;
+        explicit Matrix(Matrix<H2, W2, T> other) {
+            Matrix<H, W, T> m;
             for (int i = 0; i < std::min(H, H2); i++) {
                 for (int j = 0; j < std::min(W, W2); j++) {
                     m[i][j] = other[i][j];
@@ -70,18 +70,18 @@ namespace LinearAlgebra {
         }
 
         // Returns the a column as a vector
-        Vector <T, H> column_as_vector(unsigned int i) const {
-            Vector<T, H> column;
+        Vector <H, T> column_as_vector(unsigned int i) const {
+            Vector<H, T> column;
             for (int j = 0; j < H; j++)
                 column[j] = values[j][i];
             return column;
         }
 
         // Returns the colums of the matrix as vectors
-        std::array<Vector < T, H>, W>
+        std::array<Vector <H, T>, W>
 
         to_vectors() const {
-            std::array<Vector<T, H>, W> vectors;
+            std::array<Vector<H, T>, W> vectors;
             for (int i = 0; i < W; i++) vectors[i] = column_as_vector(i);
             return vectors;
         }
@@ -155,8 +155,8 @@ namespace LinearAlgebra {
 
         // Multiplies 2 matrices together
         template<unsigned int D>
-        Matrix<T, H, D> multiply_matrix(const Matrix<T, W, D> &b) const {
-            Matrix<T, H, D> multiply;
+        Matrix<H, D, T> multiply_matrix(const Matrix<W, D, T> &b) const {
+            Matrix<H, D, T> multiply;
             for (int i = 0; i < H; i++) {
                 for (int j = 0; j < W; j++) {
                     T accumulator = 0;
@@ -169,27 +169,27 @@ namespace LinearAlgebra {
 
         // Operator overload for matrix multiplication
         template<unsigned int D>
-        Matrix<T, D, D> operator*(const Matrix<T, H, D> &b) const {
+        Matrix<D, D, T> operator*(const Matrix<H, D, T> &b) const {
             return (*this).multiply_matrix(b);
         }
 
-        Vector <T, H> multiply_vector(const Vector <T, W> &v) const {
-            Vector<T, H> multiply;
+        Vector <H, T> multiply_vector(const Vector <W, T> &v) const {
+            Vector<H, T> multiply;
             for (int i = 0; i < H; i++)
                 multiply += v[i] * column_as_vector(i);
             return multiply;
         }
 
         // Operator overload for matrix multiplication
-        Vector <T, H> operator*(const Vector <T, W> &b) const {
+        Vector <H, T> operator*(const Vector <W, T> &b) const {
             return (*this).multiply_vector(b);
         }
 
-        // Returns the submatrix with H2 rows and W2 columns starting at row, column
+        // Returns the sub-matrix with H2 rows and W2 columns starting at row, column
         template<unsigned int H2, unsigned int W2>
-        Matrix<T, H2, W2> sub_matrix(unsigned row, unsigned int column) {
+        Matrix<H2, W2, T> sub_matrix(unsigned row, unsigned int column) {
             static_assert(H2 + row < H && W2 + column < W, "Cannot take sub-matrix. Out of bounds.");
-            Matrix<T, H2, W2> sub_matrix;
+            Matrix<H2, W2, T> sub_matrix;
             for (int i = 0; i < W2; i++) {
                 for (int j = 0; j < H2; j++) {
                     sub_matrix[i][j] = (*this)[i + row][j + column];
@@ -199,13 +199,13 @@ namespace LinearAlgebra {
         }
 
         // Returns the matrix without the specified row
-        Matrix<T, H - 1, W> remove_row(int row_index) const {
+        Matrix<H - 1, W, T> remove_row(int row_index) const {
             static_assert(H > 1, "Cannot remove row from matrix with 1 row");
 
             if (row_index < 0) row_index = H + row_index;
             assert(row_index < H && row_index >= 0);
 
-            Matrix<T, H - 1, W> matrix;
+            Matrix<H - 1, W, T> matrix;
             for (int i = 0; i < H - 1; i++) {
                 for (int j = 0; j < W; j++) {
                     if (i >= row_index) {
@@ -220,13 +220,13 @@ namespace LinearAlgebra {
         }
 
         // Returns the matrix without the specified column
-        Matrix<T, H, W - 1> remove_column(int column_index) const {
+        Matrix<H, W - 1, T> remove_column(int column_index) const {
             static_assert(W > 1, "Cannot remove column from matrix with 1 column");
 
             if (column_index < 0) column_index = W + column_index;
             assert(column_index < W && column_index >= 0);
 
-            Matrix<T, H, W - 1> matrix;
+            Matrix<H, W - 1, T> matrix;
             for (int i = 0; i < H; i++) {
                 for (int j = 0; j < W - 1; j++) {
                     if (j >= column_index) {
@@ -241,7 +241,7 @@ namespace LinearAlgebra {
         }
 
         // Returns the minor matrix of a given cell
-        Matrix<T, H - 1, W - 1> minor(int row, int col) const {
+        Matrix<H - 1, W - 1, T> minor(int row, int col) const {
             static_assert(H > 1 && W > 1, "Cannot take a minor of a matrix with a dimension of 1");
             return (*this).remove_row(row).remove_column(col);
         }
@@ -263,15 +263,15 @@ namespace LinearAlgebra {
         }
 
         // Transposes the matrix
-        Matrix<T, W, H> transpose() const {
-            Matrix<T, W, H> transpose;
+        Matrix<H, W, T> transpose() const {
+            Matrix<H, W, T> transpose;
             for (int i = 0; i < H; i++) for (int j = 0; j < W; j++) transpose[i][j] = values[j][i];
             return transpose;
         }
 
         // Calculates the adjugate of a matrix
-        Matrix<T, H, W> adjugate() const {
-            Matrix<T, W, H> adjugate;
+        Matrix<H, W, T> adjugate() const {
+            Matrix<H, W, T> adjugate;
             for (int i = 0; i < H; i++) {
                 for (int j = 0; j < W; j++) {
                     double sign = ((i * W + j) % 2 == 0) ? 1 : -1;
@@ -283,7 +283,7 @@ namespace LinearAlgebra {
 
         // Calculates the inverse of a matrix.
         // Throws std::invalid_argument when used on a singular matrix.
-        Matrix<T, H, W> inverse() const {
+        Matrix<H, W, T> inverse() const {
             double det = this->determinant();
             if (det == 0.0)
                 throw std::invalid_argument("Cannot compute inverse of singular matrix");
@@ -292,19 +292,19 @@ namespace LinearAlgebra {
         }
 
         // Returns raw pointer to internal data
-        T* data() {
-            return (T*) values.data();
+        T *data() {
+            return (T *) values.data();
         }
 
         // Returns const raw poinnter to internal data
-        const T* data() const {
-            return (T*) values.data();
+        const T *data() const {
+            return (T *) values.data();
         }
     };
 
 // Overloads operator to make scalar multiplication commutative
     template<typename T, unsigned int H, unsigned int W>
-    Matrix<T, H, W> operator*(const T scalar, const Matrix<T, H, W> &matrix) {
+    Matrix<H, W, T> operator*(const T scalar, const Matrix<H, W, T> &matrix) {
         return matrix * scalar;
     }
 }

@@ -20,7 +20,7 @@ using namespace LinearAlgebra;
 
 namespace Test {
     bool Vector_constructor_test() {
-        Vector<int, 6> v{0, 4, 5, 6};
+        Vector<6, int> v{0, 4, 5, 6};
         TEST_ASSERT(v[0] == 0);
         TEST_ASSERT(v[1] == 4);
         TEST_ASSERT(v[2] == 5);
@@ -31,19 +31,19 @@ namespace Test {
     }
 
     bool Vector_sum() {
-        Vector<double, 3> a{3.5, 0.0, 11.7};
-        Vector<double, 3> b{5.5, 8.0, 8.3};
-        Vector<double, 3> c = a + b;
-        Vector<double, 3> d{9.0, 8.0, 20.0};
+        Vector<3> a{3.5, 0.0, 11.7};
+        Vector<3> b{5.5, 8.0, 8.3};
+        Vector<3> c = a + b;
+        Vector<3> d{9.0, 8.0, 20.0};
         TEST_ASSERT(c == d);
         TEST_COMPLETE;
     }
 
     bool Vector_concat() {
-        Vector<int, 3> v1{1, 2, 3};
-        Vector<int, 4> v2 = v1.append(4);
-        Vector<int, 2> v3{4, 5};
-        Vector<int, 5> v4 = v1.concat(v3);
+        Vector<3, int> v1{1, 2, 3};
+        Vector<4, int> v2 = v1.append(4);
+        Vector<2, int> v3{4, 5};
+        Vector<5, int> v4 = v1.concat(v3);
         TEST_ASSERT(v2[0] == 1);
         TEST_ASSERT(v2[1] == 2);
         TEST_ASSERT(v2[2] == 3);
@@ -57,23 +57,23 @@ namespace Test {
     }
 
     bool Vector_difference() {
-        Vector<double, 3> a{3.5, 0.0, 11.0};
-        Vector<double, 3> b{5.5, 8.0, 8.0};
-        Vector<double, 3> c = a - b;
-        Vector<double, 3> d{-2.0, -8.0, 3.0};
+        Vector<3> a{3.5, 0.0, 11.0};
+        Vector<3> b{5.5, 8.0, 8.0};
+        Vector<3> c = a - b;
+        Vector<3> d{-2.0, -8.0, 3.0};
         TEST_ASSERT(c == d);
         TEST_COMPLETE;
     }
 
     bool Vector_scaling() {
-        Vector<double, 3> a{7.5, 8.0, 20.0};
-        Vector<double, 3> b{18.75, 20.0, 50.0};
+        Vector<3> a{7.5, 8.0, 20.0};
+        Vector<3> b{18.75, 20.0, 50.0};
         TEST_ASSERT(a * 2.5 == b);
         TEST_COMPLETE;
     }
 
     bool Vector_split() {
-        Vector<int, 5> v{5, 8, 2, 3, 6};
+        Vector<5, int> v{5, 8, 2, 3, 6};
         auto[a, b] = v.split<2>();
         TEST_ASSERT(a[0] == 5);
         TEST_ASSERT(a[1] == 8);
@@ -84,21 +84,21 @@ namespace Test {
     }
 
     bool Vector_length() {
-        Vector<int, 3> v{3, 4};
+        Vector<3, int> v{3, 4};
         TEST_ASSERT(v.length() == 5.0);
         TEST_COMPLETE;
     }
 
     bool Vector_angle_between() {
-        Vector<int, 2> a{1, 0};
-        Vector<int, 2> b{0, 1};
+        Vector<2, int> a{1, 0};
+        Vector<2, int> b{0, 1};
         double angle = a.angle_between(b);
         TEST_ASSERT(angle == M_PI_2);
         TEST_COMPLETE;
     }
 
     bool Vector_normalisation() {
-        Vector<double, 3> a{6, 2, 5};
+        Vector<3> a{6, 2, 5};
         double normal_length = a.normalised().length();
         TEST_ASSERT(normal_length == 1.0);
         a.normalise();
@@ -107,16 +107,16 @@ namespace Test {
     }
 
     bool Vector_cross_product() {
-        Vector<double, 3> a{1, 0, 0};
-        Vector<double, 3> b{0, 1, 0};
-        Vector<double, 3> c = a.cross_product(b);
-        Vector<double, 3> d{0, 0, 1};
+        Vector<3> a{1, 0, 0};
+        Vector<3> b{0, 1, 0};
+        Vector<3> c = a.cross_product(b);
+        Vector<3> d{0, 0, 1};
         TEST_ASSERT(c == d);
         TEST_COMPLETE;
     }
 
     bool Matrix_constructor() {
-        Matrix<double, 3, 3> m;
+        Matrix<3> m;
         TEST_ASSERT(m[0][0] == 1.0);
         TEST_ASSERT(m[1][0] == 0.0);
         TEST_ASSERT(m[2][0] == 0.0);
@@ -126,20 +126,20 @@ namespace Test {
         TEST_ASSERT(m[0][2] == 0.0);
         TEST_ASSERT(m[1][2] == 0.0);
         TEST_ASSERT(m[2][2] == 1.0);
-        Matrix<int, 3, 3> m2([](unsigned int i, unsigned int j) { return i + j; });
+        Matrix<3, 3, int> m2([](unsigned int i, unsigned int j) { return i + j; });
         TEST_ASSERT(m2[2][2] == 4);
         TEST_ASSERT(m2[1][0] == 1);
         TEST_ASSERT(m2[0][1] == 1);
         TEST_ASSERT(m2[2][1] == 3);
         float value = 5.0;
-        Matrix<float, 3, 3> m3([&value](unsigned int i, unsigned int j) { return i + j + value; });
+        Matrix<3, 3, float> m3([&value](unsigned int i, unsigned int j) { return i + j + value; });
         TEST_ASSERT(m3[0][0] == 5.0);
         TEST_ASSERT(m3[2][2] == 9.0);
         TEST_COMPLETE;
     }
 
     bool Vector_data() {
-        Vector<int, 9> a{1, 2, 3, 4, 5, 6, 7, 8, 9};
+        Vector<9, int> a{1, 2, 3, 4, 5, 6, 7, 8, 9};
         TEST_ASSERT(a.data()[0] == 1);
         TEST_ASSERT(a.data()[3] == 4);
         TEST_ASSERT(a.data()[6] == 7);
@@ -148,42 +148,42 @@ namespace Test {
     }
 
     bool Matrix_multiplication() {
-        Matrix<double, 3, 3> a{8, 5, 3, 1, 6, 9, 2, 4, 7};
-        Matrix<double, 3, 3> b{5, 9, 2, 6, 7, 4, 1, 3, 8};
-        Matrix<double, 3, 3> c{73, 116, 60, 50, 78, 98, 41, 67, 76};
+        Matrix<3> a{8, 5, 3, 1, 6, 9, 2, 4, 7};
+        Matrix<3> b{5, 9, 2, 6, 7, 4, 1, 3, 8};
+        Matrix<3> c{73, 116, 60, 50, 78, 98, 41, 67, 76};
         TEST_ASSERT(a * b == c);
         TEST_COMPLETE;
     }
 
     bool Matrix_determinant() {
-        Matrix<double, 1, 1> a{1.0};
+        Matrix<1> a{1.0};
         TEST_ASSERT(a.determinant() == 1.0);
-        Matrix<double, 2, 2> b{1.0, 2.0,
-                               3.0, 4.0};
+        Matrix<2> b{1.0, 2.0,
+                    3.0, 4.0};
         TEST_ASSERT(b.determinant() == -2.0);
-        Matrix<double, 3, 3> c({5, 9, 7,
-                                4, 1, 6,
-                                3, 8, 2});
+        Matrix<3> c({5, 9, 7,
+                     4, 1, 6,
+                     3, 8, 2});
         TEST_ASSERT(c.determinant() == 63.0);
         TEST_COMPLETE;
     }
 
     bool Matrix_inverse() {
-        Matrix<double, 3, 3> a{2, 2, 0,
-                               0, 4, 0,
-                               16, 0, 8};
-        Matrix<double, 3, 3> b = a.inverse();
-        Matrix<double, 3, 3> c{1.0 / 2.0, -1.0 / 4.0, 0,
-                               0, 1.0 / 4.0, 0,
-                               -1.0, 1.0 / 2.0, 1.0 / 8.0};
+        Matrix<3> a{2, 2, 0,
+                    0, 4, 0,
+                    16, 0, 8};
+        Matrix<3> b = a.inverse();
+        Matrix<3> c{1.0 / 2.0, -1.0 / 4.0, 0,
+                    0, 1.0 / 4.0, 0,
+                    -1.0, 1.0 / 2.0, 1.0 / 8.0};
         TEST_ASSERT(b == c);
-        Matrix<double, 3, 3> d;
+        Matrix<3> d;
         TEST_ASSERT(a * b == d);
         TEST_COMPLETE;
     }
 
     bool Matrix_data() {
-        Matrix<int, 3, 3> a{1, 2, 3, 4, 5, 6, 7, 8, 9};
+        Matrix<3, 3, int> a{1, 2, 3, 4, 5, 6, 7, 8, 9};
         TEST_ASSERT(a.data()[0] == 1);
         TEST_ASSERT(a.data()[3] == 4);
         TEST_ASSERT(a.data()[6] == 7);
@@ -194,9 +194,9 @@ namespace Test {
     bool Transformation_translation() {
         using namespace Transformation;
 
-        Vector<double, 4> a{1, 2, 3, 1};
-        Matrix<double, 4, 4> m = translate<double, 4>(Vector<double, 3>{3, -2, 6});
-        Vector<double, 4> b{4, 0, 9, 1};
+        Vector<4> a{1, 2, 3, 1};
+        Matrix<4> m = translate<double, 4>(Vector<3>{3, -2, 6});
+        Vector<4> b{4, 0, 9, 1};
         TEST_ASSERT(m * a == b);
         TEST_COMPLETE;
     }
@@ -204,9 +204,9 @@ namespace Test {
     bool Transformation_scale() {
         using namespace Transformation;
 
-        Vector<double, 2> a{2, 5};
-        Matrix<double, 2, 2> m = scale<double, 2>(Vector<double, 2>{2, 3});
-        Vector<double, 2> b{4, 15};
+        Vector<2> a{2, 5};
+        Matrix<2> m = scale<double, 2>(Vector<2>{2, 3});
+        Vector<2> b{4, 15};
         TEST_ASSERT(m * a == b);
         TEST_COMPLETE;
     }
@@ -216,15 +216,15 @@ namespace Test {
         using namespace Transformation;
 
         auto orientation = EulerAngle(0, 0, M_PI);
-        Vector<double, 3> a{1, 0, 0};
-        Matrix<double, 3, 3> matrix = rotation<double, 3>(orientation);
-        Vector<double, 3> b = matrix * a;
-        Vector<double, 3> c{-1, 0, 0};
+        Vector<3> a{1, 0, 0};
+        Matrix<3> matrix = rotation<double, 3>(orientation);
+        Vector<3> b = matrix * a;
+        Vector<3> c{-1, 0, 0};
         TEST_ASSERT((c - b).length() < 0.0000001);
         orientation = EulerAngle(0, M_PI_2, 0);
         matrix = rotation<double, 3>(orientation);
         b = matrix * a;
-        c = Vector<double, 3>{0, 1, 0};
+        c = Vector<3>{0, 1, 0};
         TEST_ASSERT((c - b).length() < 0.0000001);
         TEST_COMPLETE;
     }

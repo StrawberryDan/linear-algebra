@@ -5,7 +5,7 @@
 
 namespace LinearAlgebra {
 // Vector of type T and size S
-    template<typename T, unsigned int S> requires std::is_integral<T>::value || std::is_floating_point<T>::value
+    template<unsigned int S, typename T = double> requires std::is_integral<T>::value || std::is_floating_point<T>::value
     class Vector {
     private:
         // Array containing the values values
@@ -140,8 +140,8 @@ namespace LinearAlgebra {
 
         // Method for concatenating 2 vectors
         template<unsigned int S2>
-        Vector<T, S + S2> concat(const Vector<T, S2> &b) {
-            Vector<T, S + S2> concat;
+        Vector<S + S2, T> concat(const Vector<S2, T> &b) {
+            Vector<S + S2, T> concat;
             for (int i = 0; i < S + S2; i++) {
                 if (i < S) concat[i] = (*this)[i];
                 else concat[i] = b[i - S];
@@ -150,8 +150,8 @@ namespace LinearAlgebra {
         }
 
         // Method for appends a value to the end of a vector
-        Vector<T, S + 1> append(T v) {
-            Vector<T, S + 1> concat;
+        Vector<S + 1, T> append(T v) {
+            Vector<S + 1, T> concat;
 
             for (int i = 0; i < S; i++) concat[i] = (*this)[i];
             concat[S] = v;
@@ -161,9 +161,9 @@ namespace LinearAlgebra {
 
         // Splits a vector into 2 at the given index
         template<unsigned int SPLIT_IDX>
-        std::tuple<Vector<T, SPLIT_IDX>, Vector<T, S - SPLIT_IDX>> split() {
-            Vector<T, SPLIT_IDX> a;
-            Vector<T, S - SPLIT_IDX> b;
+        std::tuple<Vector<SPLIT_IDX, T>, Vector<S - SPLIT_IDX, T>> split() {
+            Vector<SPLIT_IDX, T> a;
+            Vector<S - SPLIT_IDX, T> b;
 
             for (int i = 0; i < S; i++) {
                 if (i < SPLIT_IDX) a[i] = (*this)[i];
@@ -174,10 +174,10 @@ namespace LinearAlgebra {
         }
 
         // Returns the cross product of two vectors of length 3
-        Vector<T, S> cross_product(const Vector &b) {
+        Vector<S, T> cross_product(const Vector &b) {
             static_assert(S == 3, "Cross Product is not defined on vectors of size other than 3");
 
-            Vector<T, 3> cross;
+            Vector<3, T> cross;
             cross[0] = (*this)[1] * b[2] - (*this)[2] * b[1];
             cross[1] = (*this)[2] * b[0] - (*this)[0] * b[2];
             cross[2] = (*this)[0] * b[1] - (*this)[1] * b[0];
@@ -196,7 +196,7 @@ namespace LinearAlgebra {
     };
 
     template<typename T, unsigned int S>
-    Vector<T, S> operator*(const T m, const Vector<T, S> &v) {
+    Vector<S, T> operator*(const T m, const Vector<S, T> &v) {
         return v * m;
     }
 }
