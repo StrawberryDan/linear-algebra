@@ -195,7 +195,7 @@ namespace Test {
         using namespace Transformation;
 
         Vector<4> a{1, 2, 3, 1};
-        Matrix<4> m = translate<double, 4>(Vector<3>{3, -2, 6});
+        Matrix<4> m = translate<4>(Vector<3>{3, -2, 6});
         Vector<4> b{4, 0, 9, 1};
         TEST_ASSERT(m * a == b);
         TEST_COMPLETE;
@@ -205,7 +205,7 @@ namespace Test {
         using namespace Transformation;
 
         Vector<2> a{2, 5};
-        Matrix<2> m = scale<double, 2>(Vector<2>{2, 3});
+        Matrix<2> m = scale<2>(Vector<2>{2, 3});
         Vector<2> b{4, 15};
         TEST_ASSERT(m * a == b);
         TEST_COMPLETE;
@@ -217,12 +217,12 @@ namespace Test {
 
         auto orientation = EulerAngle(0, 0, M_PI);
         Vector<3> a{1, 0, 0};
-        Matrix<3> matrix = rotation<double, 3>(orientation);
+        Matrix<3> matrix = rotation<3>(orientation);
         Vector<3> b = matrix * a;
         Vector<3> c{-1, 0, 0};
         TEST_ASSERT((c - b).length() < 0.0000001);
         orientation = EulerAngle(0, M_PI_2, 0);
-        matrix = rotation<double, 3>(orientation);
+        matrix = rotation<3>(orientation);
         b = matrix * a;
         c = Vector<3>{0, 1, 0};
         TEST_ASSERT((c - b).length() < 0.0000001);

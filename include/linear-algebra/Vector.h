@@ -17,10 +17,10 @@ namespace LinearAlgebra {
         };
 
         // Copy Constructor from array
-        Vector(std::array<T, S> &data) : values(data) {}
+        explicit Vector(std::array<T, S> &data) : values(data) {}
 
         // Move Constructor of an array
-        Vector(std::array<T, S> &&data) : values(data) {}
+        explicit Vector(std::array<T, S> &&data) : values(data) {}
 
         // Initialises a vector from the given values. Fills up to the length of the list or the vector and the rest will be 0.
         Vector(std::initializer_list<T> args) : Vector() {
@@ -105,6 +105,11 @@ namespace LinearAlgebra {
         // Operator overload for constant multiplication-assignment
         void operator*=(const T &b) {
             (*this) = (*this).scale(b);
+        }
+
+        // Operator overload for vector negation
+        Vector<S, T> operator-() const {
+            return -1 * (*this);
         }
 
         // Normalises the vector
