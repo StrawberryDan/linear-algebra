@@ -252,5 +252,9 @@ int main() {
     TEST(Transformation_translation)
     TEST(Transformation_scale)
     TEST(Transformation_rotation)
-    std::cout << success << "/" << total << " passed!" << std::endl;
+
+    if (success == total)
+        std::cout << success << "/" << total << " passed!" << std::endl;
+    else
+        std::cerr << success << "/" << total << " passed!" << std::endl;
 }

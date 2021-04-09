@@ -18,7 +18,7 @@ namespace LinearAlgebra {
         }
 
         // Initialises the matrix with the given values in row column order. Unspecified values are the identity.
-        explicit Matrix(std::initializer_list<T> args) : Matrix() {
+        Matrix(std::initializer_list<T> args) : Matrix() {
             int cursor = 0;
             for (auto i = args.begin(); i != args.end() && cursor < W * H; i++) {
                 int row = cursor / W;
@@ -29,8 +29,8 @@ namespace LinearAlgebra {
         }
 
         // Initialises the matrix with explicit rows and columns. Unspecified values are the identity.
-        explicit Matrix(std::initializer_list<std::initializer_list<T>> args) : Matrix() {
-            int rowCursor = 0, colCursor = 0;
+        Matrix(std::initializer_list<std::initializer_list<T>> args) : Matrix() {
+            int rowCursor = 0, colCursor;
 
             for (auto rowIter = args.begin(); rowIter != args.end() && rowCursor < H; rowIter++) {
                 auto row = *rowIter;
