@@ -217,12 +217,12 @@ namespace Test {
 
         auto orientation = EulerAngle(0, 0, M_PI);
         Vector<3> a{1, 0, 0};
-        Matrix<3> matrix = rotation<3>(orientation);
+        Matrix<3> matrix = rotate3d<3>(orientation);
         Vector<3> b = matrix * a;
         Vector<3> c{-1, 0, 0};
         TEST_ASSERT((c - b).length() < 0.0000001);
         orientation = EulerAngle(0, M_PI_2, 0);
-        matrix = rotation<3>(orientation);
+        matrix = rotate3d<3>(orientation);
         b = matrix * a;
         c = Vector<3>{0, 1, 0};
         TEST_ASSERT((c - b).length() < 0.0000001);

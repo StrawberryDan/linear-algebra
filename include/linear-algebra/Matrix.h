@@ -6,7 +6,7 @@
 
 namespace LinearAlgebra {
     template<unsigned int H, unsigned int W = H, typename T = double> requires std::is_integral<T>::value ||
-                                                                           std::is_floating_point<T>::value
+                                                                               std::is_floating_point<T>::value
     class Matrix {
     protected:
         std::array<std::array<T, W>, H> values;
@@ -78,7 +78,7 @@ namespace LinearAlgebra {
         }
 
         // Returns the colums of the matrix as vectors
-        std::array<Vector <H, T>, W>
+        std::array<Vector < H, T>, W>
 
         to_vectors() const {
             std::array<Vector<H, T>, W> vectors;
@@ -302,9 +302,23 @@ namespace LinearAlgebra {
         }
     };
 
-// Overloads operator to make scalar multiplication commutative
+    // Overloads operator to make scalar multiplication commutative
     template<typename T, unsigned int H, unsigned int W>
     Matrix<H, W, T> operator*(const T scalar, const Matrix<H, W, T> &matrix) {
         return matrix * scalar;
     }
+
+    // Aliases for common types
+    using Mat2 = Matrix<2, 2, double>;
+    using Mat3 = Matrix<3, 3, double>;
+    using Mat4 = Matrix<4, 4, double>;
+    using Mat2f = Matrix<2, 2, float>;
+    using Mat3f = Matrix<3, 3, float>;
+    using Mat4f = Matrix<4, 4, float>;
+    using Mat2i = Matrix<2, 2, int>;
+    using Mat3i = Matrix<3, 3, int>;
+    using Mat4i = Matrix<4, 4, int>;
+    using Mat2u = Matrix<2, 2, unsigned int>;
+    using Mat3u = Matrix<3, 3, unsigned int>;
+    using Mat4u = Matrix<4, 4, unsigned int>;
 }

@@ -204,4 +204,18 @@ namespace LinearAlgebra {
     Vector<S, T> operator*(const T m, const Vector<S, T> &v) {
         return v * m;
     }
+
+    // Aliases for common types
+    using Vec2 = Vector<2, double>;
+    using Vec3 = Vector<3, double>;
+    using Vec4 = Vector<4, double>;
+    using Vec2f = Vector<2, float>;
+    using Vec3f = Vector<3, float>;
+    using Vec4f = Vector<4, float>;
+    using Vec2i = Vector<2, int>;
+    using Vec3i = Vector<3, int>;
+    using Vec4i = Vector<4, int>;
+    using Vec2u = Vector<2, unsigned int>;
+    using Vec3u = Vector<3, unsigned int>;
+    using Vec4u = Vector<4, unsigned int>;
 }
