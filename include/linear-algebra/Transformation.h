@@ -24,11 +24,24 @@ namespace LinearAlgebra::Transformation {
         return translate;
     }
 
+    // Creates a matrix which applies a 2d rotation to vectors. In the case of 3d it represents a rotation on the Z axis.
+    template<unsigned int S>
+    Matrix<S> rotate2d(const Orientation::Angle angle) {
+        static_assert(S >= 2, "2D rotation undefined for matrices smaller than 2x2.");
+
+        Mat2 base = {
+                cos(angle), -sin(angle),
+                sin(angle), cos(angle)
+        };
+
+        return Matrix<S>(base);
+    }
+
     // Creates a matrix which applies a 3d rotation to vectors. Orientation described with Euler Angles.
     // Returned matrix must be 3x3 or bigger. Values not included in the first 3x3 sub-matrix will be
     // set to the identity.
-    template<unsigned int S, typename T = double>
-    Matrix<S, S, T> rotate3d(const Orientation::EulerAngle &orientation) {
+    template<unsigned int S>
+    Matrix<S> rotate3d(const Orientation::EulerAngle &orientation) {
         static_assert(S >= 3, "Euler Angle rotation matrix undefined in matrices smaller than 3x3.");
 
         const double &x = orientation.x;
@@ -41,6 +54,6 @@ namespace LinearAlgebra::Transformation {
                 cos(z) * sin(x) * sin(y), cos(y) * sin(x), cos(x) * cos(z) + sin(x) * sin(y) * sin(z)
         };
 
-        return Matrix<S, S, T>(base);
+        return Matrix<S>(base);
     }
 }
