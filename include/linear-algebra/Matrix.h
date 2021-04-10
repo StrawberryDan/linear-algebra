@@ -77,10 +77,8 @@ namespace LinearAlgebra {
             return column;
         }
 
-        // Returns the colums of the matrix as vectors
-        std::array<Vector < H, T>, W>
-
-        to_vectors() const {
+        // Returns the columns of the matrix as vectors
+        std::array<Vector<H, T>, W> to_vectors() const {
             std::array<Vector<H, T>, W> vectors;
             for (int i = 0; i < W; i++) vectors[i] = column_as_vector(i);
             return vectors;
@@ -237,6 +235,22 @@ namespace LinearAlgebra {
                 }
             }
 
+            return matrix;
+        }
+
+        // Appends a row onto the end of the matrix
+        Matrix<H + 1, W, T> append_row(std::array<T, W> row) {
+            Matrix<H + 1, W, T> matrix;
+            for (int i = 0; i < H; i++) for (int j = 0; j < W; j++) matrix[i][j] = (*this)[i][j];
+            for (int i = 0; i < W; i++) matrix[H][i] = row[i];
+            return matrix;
+        }
+
+        // Appends a column onto the end of the matrix
+        Matrix<H, W + 1, T> append_column(std::array<T, W> column) {
+            Matrix<H, W + 1, T> matrix;
+            for (int i = 0; i < H; i++) for (int j = 0; j < W; j++) matrix[i][j] = (*this)[i][j];
+            for (int i = 0; i < H; i++) matrix[i][W] = column[i];
             return matrix;
         }
 
