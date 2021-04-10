@@ -1,6 +1,6 @@
 #pragma once
 
-namespace LinearAlgebra::Orientation {
+namespace LinearAlgebra {
     // Structure representing an orientation in 3D with Euler Angles.
     // In reality this method represents rotation using Tait-Bryan angles as it uses 3 distinct axes for simplicity.
     struct EulerAngle {

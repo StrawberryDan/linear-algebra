@@ -4,7 +4,7 @@
 #include "Matrix.h"
 #include "Orientation.h"
 
-namespace LinearAlgebra::Transformation {
+namespace LinearAlgebra {
     // Creates and S x S matrix which scales points by the parameter
     template<unsigned int S, typename T = double>
     Matrix<S, S, T> scale(Vector<S, T> factor) {
@@ -41,7 +41,7 @@ namespace LinearAlgebra::Transformation {
     // Returned matrix must be 3x3 or bigger. Values not included in the first 3x3 sub-matrix will be
     // set to the identity.
     template<unsigned int S>
-    Matrix<S> rotate3d(const Orientation::EulerAngle &orientation) {
+    Matrix<S> rotate3d(const EulerAngle &orientation) {
         static_assert(S >= 3, "Euler Angle rotation matrix undefined in matrices smaller than 3x3.");
 
         const double &x = orientation.x;

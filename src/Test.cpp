@@ -194,8 +194,6 @@ namespace Test {
     }
 
     bool Transformation_translation() {
-        using namespace Transformation;
-
         Vector<4> a{1, 2, 3, 1};
         Matrix<4> m = translate<4>(Vector<3>{3, -2, 6});
         Vector<4> b{4, 0, 9, 1};
@@ -204,8 +202,6 @@ namespace Test {
     }
 
     bool Transformation_scale() {
-        using namespace Transformation;
-
         Vector<2> a{2, 5};
         Matrix<2> m = scale<2>(Vector<2>{2, 3});
         Vector<2> b{4, 15};
@@ -214,9 +210,6 @@ namespace Test {
     }
 
     bool Transformation_rotation() {
-        using namespace Orientation;
-        using namespace Transformation;
-
         auto orientation = EulerAngle(0, 0, M_PI);
         Vector<3> a{1, 0, 0};
         Matrix<3> matrix = rotate3d<3>(orientation);
@@ -232,8 +225,6 @@ namespace Test {
     }
 
     bool Quaternion_multiplication() {
-        using namespace Orientation;
-
         Quaternion q1(5, 3, 7, 9);
         Quaternion q2(7, 1, 4, 6);
         Quaternion q3 = q1 * q2;
@@ -243,8 +234,6 @@ namespace Test {
     }
 
     bool Quaternion_rotation() {
-        using namespace Orientation;
-
         Quaternion q1(0, Vec3{1, 0, 0});
         Quaternion r = Quaternion::rotation(M_PI, Vec3{0, 1, 0});
         Quaternion q2 = r * q1 * r.inverse();
