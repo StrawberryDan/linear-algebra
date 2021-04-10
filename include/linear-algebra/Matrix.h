@@ -255,6 +255,16 @@ namespace LinearAlgebra {
             return matrix;
         }
 
+        // Swaps the rows with the given indices
+        void swap_rows(int i, int j) {
+            for (int w = 0; w < W; w++) std::swap(values[i][w], values[j][w]);
+        }
+
+        // Swaps the columns with the given indices
+        void swap_columns(int i, int j) {
+            for (int h = 0; h < H; h++) std::swap(values[h][i], values[h][j]);
+        }
+
         // Returns the minor matrix of a given cell
         Matrix<H - 1, W - 1, T> minor(int row, int col) const {
             static_assert(H > 1 && W > 1, "Cannot take a minor of a matrix with a dimension of 1");
