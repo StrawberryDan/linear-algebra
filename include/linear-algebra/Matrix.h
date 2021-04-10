@@ -48,6 +48,7 @@ namespace LinearAlgebra {
             for (int i = 0; i < H; i++) for (int j = 0; j < W; j++) values[i][j] = lambda(i, j);
         }
 
+        // Construct a matrix from one of a different size. Undefined cells are made to be the identity.
         template<unsigned int H2, unsigned int W2>
         explicit Matrix(Matrix<H2, W2, T> other) {
             Matrix<H, W, T> m;
