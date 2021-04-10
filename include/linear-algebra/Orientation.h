@@ -189,5 +189,22 @@ namespace LinearAlgebra {
         Quaternion inverse() const {
             return Quaternion(real_part(), -vector_part());
         }
+
+        // Calculates the euclidean magnitude of the quaternion
+        double magnitude() const {
+            double mag_squared = r * r + i * i + j * j + k * k;
+            return sqrt(mag_squared);
+        }
+
+        // Returns the rotation represented by the quaternion as a matrix
+        Mat3 as_matrix() const {
+            double s = 1.0 / magnitude() * magnitude();
+
+            return {
+                    1 - 2 * s * (j * j + k + k), 2 * s * (i * j - k * r), 2 * s * (i * k + j * r),
+                    2 * s * (i * j + k * r), 1 - 2 * s * (i * i + k * k), 2 * s * (j * k - i * r),
+                    2 * s * (i * k - j * r), 2 * s * (j * k + i * r), 1 - 2 * s * (i * i + j * j)
+            };
+        }
     };
 }

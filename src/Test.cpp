@@ -235,10 +235,14 @@ namespace Test {
 
     bool Quaternion_rotation() {
         Quaternion q1(0, Vec3{1, 0, 0});
-        Quaternion r = Quaternion::rotation(M_PI, Vec3{0, 1, 0});
+        Quaternion r = Quaternion::rotation(M_PI_2, Vec3{0, 1, 0});
         Quaternion q2 = r * q1 * r.inverse();
-        Quaternion q3(0, Vec3{-1, 0, 0});
+        Quaternion q3(0, Vec3{0, 0, -1});
         TEST_ASSERT((q2 - q3).as_vector().length() < FLOATING_POINT_ERROR_THRESHOLD);
+        Vec3 v1 = {1, 0, 0};
+        Vec3 v2 = {0, 0, -1};
+        Vec3 v3 = r.as_matrix() * v1;
+        TEST_ASSERT((v2 - v3).length() < FLOATING_POINT_ERROR_THRESHOLD);
         TEST_COMPLETE;
     }
 }
