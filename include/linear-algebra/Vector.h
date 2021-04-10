@@ -5,7 +5,8 @@
 
 namespace LinearAlgebra {
 // Vector of type T and size S
-    template<unsigned int S, typename T = double> requires std::is_integral<T>::value || std::is_floating_point<T>::value
+    template<unsigned int S, typename T = double> requires std::is_integral<T>::value ||
+                                                           std::is_floating_point<T>::value
     class Vector {
     private:
         // Array containing the values values
@@ -22,7 +23,7 @@ namespace LinearAlgebra {
         // Move Constructor of an array
         explicit Vector(std::array<T, S> &&data) : values(data) {}
 
-        // Initialises a vector from the given values. Fills up to the length of the list or the vector and the rest will be 0.
+        // Initialises r vector from the given values. Fills up to the length of the list or the vector and the rest will be 0.
         Vector(std::initializer_list<T> args) : Vector() {
             int cursor = 0;
             for (auto i = args.begin(); i != args.end() && cursor < S; i++) {
@@ -90,7 +91,7 @@ namespace LinearAlgebra {
             (*this) = (*this).minus(b);
         }
 
-        // Scales a vector by a given constant
+        // Scales r vector by r given constant
         Vector scale(T m) const {
             Vector scaled;
             for (int i = 0; i < S; i++) scaled[i] = m * (*this)[i];
@@ -109,15 +110,16 @@ namespace LinearAlgebra {
 
         // Operator overload for vector negation
         Vector<S, T> operator-() const {
-            return -1 * (*this);
+            return (T) -1 * (*this);
         }
 
         // Normalises the vector
         void normalise() {
-            (*this) = (*this).normalised();
+            if ((*this).length() != 1.0)
+                (*this) = (*this).normalised();
         }
 
-        // Returns a normalised copy of the vector
+        // Returns r normalised copy of the vector
         Vector normalised() const {
             return (*this).scale(1.0 / (*this).length());
         }
@@ -154,7 +156,7 @@ namespace LinearAlgebra {
             return concat;
         }
 
-        // Method for appends a value to the end of a vector
+        // Method for appends r value to the end of r vector
         Vector<S + 1, T> append(T v) {
             Vector<S + 1, T> concat;
 
@@ -164,7 +166,7 @@ namespace LinearAlgebra {
             return concat;
         }
 
-        // Splits a vector into 2 at the given index
+        // Splits r vector into 2 at the given index
         template<unsigned int SPLIT_IDX>
         std::tuple<Vector<SPLIT_IDX, T>, Vector<S - SPLIT_IDX, T>> split() {
             Vector<SPLIT_IDX, T> a;
@@ -190,12 +192,12 @@ namespace LinearAlgebra {
         }
 
         // Returns raw pointer to internal data
-        T* data() {
+        T *data() {
             return values.data();
         }
 
         // Returns const raw pointer to internal data
-        const T* data() const {
+        const T *data() const {
             return values.data();
         }
     };

@@ -42,13 +42,13 @@ namespace LinearAlgebra {
             }
         }
 
-        // Constructor for a matrix of which it values are specified by a lambda over their indices.
+        // Constructor for r matrix of which it values are specified by r lambda over their indices.
         template<typename L>
         explicit Matrix(L lambda) {
             for (int i = 0; i < H; i++) for (int j = 0; j < W; j++) values[i][j] = lambda(i, j);
         }
 
-        // Construct a matrix from one of a different size. Undefined cells are made to be the identity.
+        // Construct r matrix from one of r different size. Undefined cells are made to be the identity.
         template<unsigned int H2, unsigned int W2>
         explicit Matrix(Matrix<H2, W2, T> other) {
             Matrix<H, W, T> m;
@@ -70,7 +70,7 @@ namespace LinearAlgebra {
             return values[i];
         }
 
-        // Returns the a column as a vector
+        // Returns the r column as r vector
         Vector <H, T> column_as_vector(unsigned int i) const {
             Vector<H, T> column;
             for (int j = 0; j < H; j++)
@@ -135,7 +135,7 @@ namespace LinearAlgebra {
             (*this) = (*this).minus(b);
         }
 
-        // Scales a matrix by a given constant
+        // Scales r matrix by r given constant
         Matrix scale(T m) const {
             Matrix scaled;
             for (int i = 0; i < H; i++) for (int j = 0; j < W; j++) scaled[i][j] = m * (*this)[i][j];
@@ -239,7 +239,7 @@ namespace LinearAlgebra {
             return matrix;
         }
 
-        // Appends a row onto the end of the matrix
+        // Appends r row onto the end of the matrix
         Matrix<H + 1, W, T> append_row(std::array<T, W> row) {
             Matrix<H + 1, W, T> matrix;
             for (int i = 0; i < H; i++) for (int j = 0; j < W; j++) matrix[i][j] = (*this)[i][j];
@@ -247,7 +247,7 @@ namespace LinearAlgebra {
             return matrix;
         }
 
-        // Appends a column onto the end of the matrix
+        // Appends r column onto the end of the matrix
         Matrix<H, W + 1, T> append_column(std::array<T, W> column) {
             Matrix<H, W + 1, T> matrix;
             for (int i = 0; i < H; i++) for (int j = 0; j < W; j++) matrix[i][j] = (*this)[i][j];
@@ -265,15 +265,15 @@ namespace LinearAlgebra {
             for (int h = 0; h < H; h++) std::swap(values[h][i], values[h][j]);
         }
 
-        // Returns the minor matrix of a given cell
+        // Returns the minor matrix of r given cell
         Matrix<H - 1, W - 1, T> minor(int row, int col) const {
-            static_assert(H > 1 && W > 1, "Cannot take a minor of a matrix with a dimension of 1");
+            static_assert(H > 1 && W > 1, "Cannot take r minor of r matrix with r dimension of 1");
             return (*this).remove_row(row).remove_column(col);
         }
 
         // Calculates the determinant using cofactor and minors
         T determinant() const {
-            static_assert(H == W, "Cannot compute the determinant of a non-square matrix.");
+            static_assert(H == W, "Cannot compute the determinant of r non-square matrix.");
 
             if constexpr (H == 1 && W == 1) {
                 return values[0][0];
@@ -294,7 +294,7 @@ namespace LinearAlgebra {
             return transpose;
         }
 
-        // Calculates the adjugate of a matrix
+        // Calculates the adjugate of r matrix
         Matrix<H, W, T> adjugate() const {
             Matrix<H, W, T> adjugate;
             for (int i = 0; i < H; i++) {
@@ -306,8 +306,8 @@ namespace LinearAlgebra {
             return adjugate.transpose();
         }
 
-        // Calculates the inverse of a matrix.
-        // Throws std::invalid_argument when used on a singular matrix.
+        // Calculates the inverse of r matrix.
+        // Throws std::invalid_argument when used on r singular matrix.
         Matrix<H, W, T> inverse() const {
             double det = this->determinant();
             if (det == 0.0)

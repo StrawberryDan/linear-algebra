@@ -18,6 +18,8 @@ using namespace LinearAlgebra;
 #define TEST_ASSERT(x) if (!(x)) return false
 #define TEST_COMPLETE return true
 
+constexpr double FLOATING_POINT_ERROR_THRESHOLD = 0.000001;
+
 namespace Test {
     bool Vector_constructor_test() {
         Vector<6, int> v{0, 4, 5, 6};
@@ -220,12 +222,34 @@ namespace Test {
         Matrix<3> matrix = rotate3d<3>(orientation);
         Vector<3> b = matrix * a;
         Vector<3> c{-1, 0, 0};
-        TEST_ASSERT((c - b).length() < 0.0000001);
+        TEST_ASSERT((c - b).length() < FLOATING_POINT_ERROR_THRESHOLD);
         orientation = EulerAngle(0, M_PI_2, 0);
         matrix = rotate3d<3>(orientation);
         b = matrix * a;
         c = Vector<3>{0, 1, 0};
-        TEST_ASSERT((c - b).length() < 0.0000001);
+        TEST_ASSERT((c - b).length() < FLOATING_POINT_ERROR_THRESHOLD);
+        TEST_COMPLETE;
+    }
+
+    bool Quaternion_multiplication() {
+        using namespace Orientation;
+
+        Quaternion q1(5, 3, 7, 9);
+        Quaternion q2(7, 1, 4, 6);
+        Quaternion q3 = q1 * q2;
+        Quaternion q4(-50, 32, 60, 98);
+        TEST_ASSERT(q3 == q4);
+        TEST_COMPLETE;
+    }
+
+    bool Quaternion_rotation() {
+        using namespace Orientation;
+
+        Quaternion q1(0, Vec3{1, 0, 0});
+        Quaternion r = Quaternion::rotation(M_PI, Vec3{0, 1, 0});
+        Quaternion q2 = r * q1 * r.inverse();
+        Quaternion q3(0, Vec3{-1, 0, 0});
+        TEST_ASSERT((q2 - q3).as_vector().length() < FLOATING_POINT_ERROR_THRESHOLD);
         TEST_COMPLETE;
     }
 }
@@ -252,6 +276,8 @@ int main() {
     TEST(Transformation_translation)
     TEST(Transformation_scale)
     TEST(Transformation_rotation)
+    TEST(Quaternion_multiplication)
+    TEST(Quaternion_rotation)
 
     if (success == total)
         std::cout << success << "/" << total << " passed!" << std::endl;
