@@ -325,6 +325,25 @@ namespace LinearAlgebra {
         const T *data() const {
             return (T *) values.data();
         }
+
+        // Returns a matrix for scaling by a factor
+        static Matrix<H, W, T> scaling(Vector<H, T> factor) {
+            static_assert(H == W, "Scaling matrix only defined for square matrices");
+            Matrix<H, W, T> scale;
+            for (int i = 0; i < H; i++) scale[i][i] = factor[i];
+            return scale;
+        }
+
+        // Creates an S x S matrix which translates an S vector by the given S-1 vector.
+        // Used with homogenous coordinates.
+        static Matrix<H, W, T> translating(Vector<H - 1, T> offset) {
+            static_assert(H == W, "Translation matrix not defined non-square matrices");
+            static_assert(H > 1, "Translation matrices not defined for 1x1 matrices");
+
+            Matrix<H, W, T> translate;
+            for (int i = 0; i < H - 1; i++) translate[i][W - 1] = offset[i];
+            return translate;
+        }
     };
 
     // Overloads operator to make scalar multiplication commutative

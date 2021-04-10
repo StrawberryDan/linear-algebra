@@ -1,6 +1,6 @@
 #include <linear-algebra/Vector.h>
 #include <linear-algebra/Matrix.h>
-#include <linear-algebra/Transformation.h>
+#include <linear-algebra/Orientation.h>
 
 #include <iostream>
 
@@ -195,7 +195,7 @@ namespace Test {
 
     bool Transformation_translation() {
         Vector<4> a{1, 2, 3, 1};
-        Matrix<4> m = translate<4>(Vector<3>{3, -2, 6});
+        Matrix<4> m = Mat4::translating(Vector<3>{3, -2, 6});
         Vector<4> b{4, 0, 9, 1};
         TEST_ASSERT(m * a == b);
         TEST_COMPLETE;
@@ -203,7 +203,7 @@ namespace Test {
 
     bool Transformation_scale() {
         Vector<2> a{2, 5};
-        Matrix<2> m = scale<2>(Vector<2>{2, 3});
+        Matrix<2> m = Mat2::scaling(Vector<2>{2, 3});
         Vector<2> b{4, 15};
         TEST_ASSERT(m * a == b);
         TEST_COMPLETE;
@@ -212,12 +212,12 @@ namespace Test {
     bool Transformation_rotation() {
         auto orientation = EulerAngle(0, 0, M_PI);
         Vector<3> a{1, 0, 0};
-        Matrix<3> matrix = rotate3d<3>(orientation);
+        Matrix<3> matrix = orientation.as_matrix();
         Vector<3> b = matrix * a;
         Vector<3> c{-1, 0, 0};
         TEST_ASSERT((c - b).length() < FLOATING_POINT_ERROR_THRESHOLD);
         orientation = EulerAngle(0, M_PI_2, 0);
-        matrix = rotate3d<3>(orientation);
+        matrix = orientation.as_matrix();
         b = matrix * a;
         c = Vector<3>{0, 1, 0};
         TEST_ASSERT((c - b).length() < FLOATING_POINT_ERROR_THRESHOLD);

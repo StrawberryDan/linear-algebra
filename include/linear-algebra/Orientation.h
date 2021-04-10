@@ -1,6 +1,22 @@
 #pragma once
 
 namespace LinearAlgebra {
+    // Struct representing a 2d orientation. Only uses one angle as to describe.
+    struct Orientation2D {
+        double angle;
+
+        Orientation2D() : angle(0) {}
+
+        explicit Orientation2D(double angle) : angle(angle) {}
+
+        Mat3 as_matrix() const {
+            return {
+                    cos(angle), -sin(angle),
+                    sin(angle), cos(angle)
+            };
+        }
+    };
+
     // Structure representing an orientation in 3D with Euler Angles.
     // In reality this method represents rotation using Tait-Bryan angles as it uses 3 distinct axes for simplicity.
     struct EulerAngle {
@@ -29,6 +45,16 @@ namespace LinearAlgebra {
 
         // Const yaw alias accessor
         constexpr const double &roll() const { return z; }
+
+        // Creates a matrix which applies a 3d rotation to vectors. Orientation described with Euler Angles.
+        Mat3 as_matrix() const {
+            return {
+                    cos(y) * cos(z), -sin(y), cos(y) * sin(z),
+                    sin(x) * sin(z) + cos(x) * cos(z) * sin(y), cos(x) * cos(y),
+                    cos(x) * sin(y) * sin(z) - cos(z) * sin(x),
+                    cos(z) * sin(x) * sin(y), cos(y) * sin(x), cos(x) * cos(z) + sin(x) * sin(y) * sin(z)
+            };
+        }
     };
 
     // Structure representing a Quaternion
