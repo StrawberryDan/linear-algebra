@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+
 namespace LinearAlgebra {
     // Struct representing a 2d orientation. Only uses one angle as to describe.
     struct Orientation2D {

@@ -9,9 +9,9 @@ use with graphics implementations however will be extending with features which 
 
 ### Vector.h
 
-```j++
+```c++
 template<unsigned int S, typename T = double>
-class Vector;
+class Vector { ... }
 ```
 
 Contains vector class that is generic over size and type. Internally the class uses an std::array to store it's values.
@@ -36,9 +36,9 @@ Also contains the following aliases:
 
 ### Matrix.h
 
-```j++
+```c++
 template<unsigned int H, unsigned int W = H, typename T = double>
-class Matrix;
+class Matrix { ... }
 ```
 
 Contains generic Matrix template. Also uses an std::array to store its values The width of the matrix is assumed to be

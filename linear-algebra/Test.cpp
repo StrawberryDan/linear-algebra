@@ -1,6 +1,6 @@
-#include <linear-algebra/Vector.h>
-#include <linear-algebra/Matrix.h>
-#include <linear-algebra/Orientation.h>
+#include <linear-algebra/Vector.hpp>
+#include <linear-algebra/Matrix.hpp>
+#include <linear-algebra/Orientation.hpp>
 
 #include <iostream>
 

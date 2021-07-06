@@ -2,7 +2,8 @@
 
 #include <array>
 #include <iostream>
-#include "Vector.h"
+#include <cmath>
+#include "Vector.hpp"
 
 namespace LinearAlgebra {
     template<unsigned int H, unsigned int W = H, typename T = double> requires std::is_integral<T>::value ||
