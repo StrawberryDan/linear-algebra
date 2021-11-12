@@ -71,11 +71,3 @@ Contains structures to represent orientation in 3D space:
 * Quaternions
 
 Each structure has a method to construct their respective transformation matrices.
-
-## Examples
-
-TODO
-
-## Planned Features
-
-TODO (Ironically)
